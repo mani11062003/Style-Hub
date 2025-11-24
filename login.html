@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syle Hub</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+     background: url('https://images.unsplash.com/photo-1595665593673-bf1ad72905c0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGNsb3RoZXMlMjBzaG9wfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500')no-repeat center center/cover;
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background: rgba(231, 2, 2, 0.9);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px black;
+      width: 350px;
+      text-align: center;
+    }
+
+    .login-container img {
+      width: 100px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color:black;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: bold;
+      color: black;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #e91e63;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #c2185b;
+    }
+
+    .registration-link {
+      margin-top: 15px;
+      display: block;
+      color: black;
+      font-size: 20px;
+      text-decoration: none;
+    }
+
+    .register-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <!-- 👕 Logo -->
+    <img src="shop logo.jpg" alt="Dress Shop Logo">
+
+    <h2>Login to Your Account</h2>
+
+    <!-- 🧍 Login Form -->
+    <form onsubmit="return validateLogin()">
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <a href="registration.html" class="registration-link">Don’t have an account? Register here</a>
+  </div>
+
+  <script>
+    function validateLogin() {
+  let email = document.getElementById('email').value;
+  let password = document.getElementById('password').value;
+
+  if (email === "" || password === "") {
+    alert("Please fill in all fields.");
+    return false;
+  } else {
+    alert("Login successful! 🎉");
+    window.location.href = "home.html";  // redirect must be here
+    return true;
+  }
+}
+
+  </script>
+
+</body>
+</html>

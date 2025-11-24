@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #e91e63;
+    }
+
+    .cart-card {
+      width: 330px;
+      background: white;
+      margin: 15px auto;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .cart-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .name {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+
+    .price {
+      color: #e91e63;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .remove-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .total-box {
+      text-align: center;
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      width: 330px;
+      margin: 20px auto;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .empty {
+      text-align: center;
+      font-size: 22px;
+      color: gray;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🛒 Your Cart</h1>
+
+<div id="cartContainer"></div>
+<div id="totalBox" class="total-box"></div>
+
+<div style="text-align: center; margin-top: 20px;">
+  <button id="checkoutBtn" style="
+    background: #e91e63;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  ">Proceed to Checkout</button>
+</div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let container = document.getElementById("cartContainer");
+let totalBox = document.getElementById("totalBox");
+
+function loadCart() {
+  container.innerHTML = "";
+  totalBox.innerHTML = "";
+
+  if (cart.length === 0) {
+    container.innerHTML = "<p class='empty'>Your cart is empty</p>";
+    return;
+  }
+
+  let total = 0;
+
+  cart.forEach((item, index) => {
+
+    if (!item.image || !item.price || !item.name) {
+      console.log("Missing data for cart item:", item);
+      return;
+    }
+
+    let numericPrice = Number(item.price.replace(/[^0-9]/g, ""));
+    total += numericPrice;
+
+    let card = document.createElement("div");
+    card.className = "cart-card";
+
+    card.innerHTML = `
+      <img src="${item.image}">
+      <p class="name">${item.name}</p>
+      <p class="price">₹${numericPrice}</p>
+      <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+    `;
+
+    container.appendChild(card);
+  });
+
+  totalBox.textContent = `Total: ₹${total}`;
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  loadCart();
+}
+
+loadCart();
+
+ document.getElementById("checkoutBtn").addEventListener("click", function() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    // Redirect to checkout page
+    window.location.href = "checkout.html";
+  });
+
+</script>
+
+</body>
+</html>

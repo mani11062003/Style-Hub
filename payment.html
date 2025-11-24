@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .total-amount {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #e91e63;
+    }
+    .payment-methods {
+      margin-bottom: 20px;
+    }
+    .payment-methods label {
+      display: block;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      background: #4CAF50;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .qr-code {
+      display: none;
+      text-align: center;
+      margin: 15px 0;
+    }
+    .qr-code img {
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Payment</h2>
+
+    <div class="total-amount" id="amount">₹0.00</div>
+
+    <div class="payment-methods">
+      <label><input type="radio" name="payment" value="card" checked> Credit/Debit Card</label>
+      <label><input type="radio" name="payment" value="upi"> UPI (GPay, PhonePe, Paytm)</label>
+      <label><input type="radio" name="payment" value="wallet"> Wallet</label>
+      <label><input type="radio" name="payment" value="netbanking"> Net Banking</label>
+      <label><input type="radio" name="payment" value="cod"> Cash on Delivery</label>
+    </div>
+
+    <div id="cardForm" class="card-form">
+      <div class="form-group">
+        <label>Card Holder Name</label>
+        <input type="text" placeholder="Enter name" required />
+      </div>
+
+      <div class="form-group">
+        <label>Card Number</label>
+        <input type="text" maxlength="16" placeholder="1234 5678 9012 3456" required />
+      </div>
+
+      <div class="form-group">
+        <label>Expiry Date</label>
+        <input type="month" required />
+      </div>
+
+      <div class="form-group">
+        <label>CVV</label>
+        <input type="password" maxlength="3" placeholder="123" required />
+      </div>
+    </div>
+
+    <div id="upiForm" class="qr-code">
+      <p>Scan QR to pay via UPI:</p>
+      <img src="QR.jpeg" alt="UPI QR Code">
+    </div>
+
+    <button id="payButton">Pay Now</button>
+  </div>
+
+  <script>
+    let orderInfo = JSON.parse(localStorage.getItem("orderInfo")) || {};
+    let totalAmount = orderInfo.total || 0;
+    document.getElementById("amount").textContent = "Total Amount: ₹" + totalAmount.toFixed(2);
+
+    const paymentRadios = document.getElementsByName('payment');
+    const cardForm = document.getElementById('cardForm');
+    const upiForm = document.getElementById('upiForm');
+
+    function togglePaymentForm() {
+      const selected = document.querySelector('input[name="payment"]:checked').value;
+      cardForm.style.display = (selected === 'card') ? 'block' : 'none';
+      upiForm.style.display = (selected === 'upi') ? 'block' : 'none';
+    }
+
+    paymentRadios.forEach(radio => {
+      radio.addEventListener('change', togglePaymentForm);
+    });
+
+    togglePaymentForm(); // initialize form
+
+    document.getElementById('payButton').addEventListener('click', function() {
+      const selected = document.querySelector('input[name="payment"]:checked').value;
+      if (selected === 'card') {
+        alert('Card Payment Successful! 🎉');
+      } else if (selected === 'upi') {
+        alert('UPI Payment Successful! 🎉');
+      } else if (selected === 'wallet') {
+        alert('Wallet Payment Successful! 🎉');
+      } else if (selected === 'netbanking') {
+        alert('Net Banking Payment Successful! 🎉');
+      } else if (selected === 'cod') {
+        alert('Order placed with Cash on Delivery! 🎉');
+      }
+
+      localStorage.removeItem("cart");
+      localStorage.removeItem("orderInfo");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

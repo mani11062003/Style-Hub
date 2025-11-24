@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results</title>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8f8f8;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #e91e63;
+    }
+
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .product-card {
+      background: white;
+      width: 260px;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      padding: 10px;
+      width: 100%;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .wishlist-btn { background: #ffebef; color: #e91e63; }
+    .cart-btn { background: black; color: white; }
+
+    .no-result {
+      text-align: center;
+      font-size: 22px;
+      color: gray;
+      margin-top: 40px;
+    }
+     .back-home {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-home a {
+      text-decoration: none;
+      background: #e91e63;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+    }
+  </style>
+
+</head>
+<body>
+
+<h1>🔍 Search Results</h1>
+ <div class="back-home">
+    <a href="index.html">⬅ Back to Home</a>
+  </div>
+
+<div id="results" class="product-grid"></div>
+
+<script>
+  // Same product list used in home page
+  const products = [
+    { name: "Men’s Denim Shirt", price: "₹799", image: "demin shirt.avif" },
+    { name: "Women’s Floral Dress", price: "₹999", image: "wm floral.avif" },
+    { name: "Kids T-Shirt", price: "₹499", image: "kids tshirt.avif" },
+    { name: "Unisex Hoodie", price: "₹1299", image: "hoodie.jpg" }
+  ];
+
+  // Get Search Query
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchText = urlParams.get("q")?.toLowerCase() || "";
+
+  let container = document.getElementById("results");
+
+  // Filter Products
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(searchText)
+  );
+
+  // If no results found
+  if (filtered.length === 0) {
+    container.innerHTML = `<p class="no-result">No results found for "<b>${searchText}</b>"</p>`;
+  }
+
+  // Display Result Cards
+  filtered.forEach((p, index) => {
+    container.innerHTML += `
+      <div class="product-card">
+        <img src="${p.image}">
+        <h3>${p.name}</h3>
+
+        <select id="size${index}">
+          <option value="">Select Size</option>
+          <option>S</option><option>M</option><option>L</option><option>XL</option>
+        </select>
+
+        <select id="color${index}">
+          <option value="">Select Color</option>
+          <option>Black</option><option>Blue</option><option>White</option><option>Grey</option>
+        </select>
+
+        <p>${p.price}</p>
+
+        <button class="btn wishlist-btn" onclick="addToWishlist(${index})">❤️ Wishlist</button>
+        <button class="btn cart-btn" onclick="addToCart(${index})">🛒 Add to Cart</button>
+      </div>
+    `;
+  });
+
+  // Add to Wishlist
+  function addToWishlist(i) {
+    let item = filtered[i];
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    wishlist.push(item);
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    alert(item.name + " added to Wishlist ❤️");
+  }
+
+  // Add to Cart
+  function addToCart(i) {
+    let item = filtered[i];
+    let size = document.getElementById("size" + i).value;
+    let color = document.getElementById("color" + i).value;
+
+    if (!size || !color) {
+      alert("Please select Size & Color!");
+      return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push({
+      name: item.name,
+      price: item.price,
+      image: item.image,
+      size,
+      color
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(item.name + " added to Cart ✔");
+  }
+</script>
+
+</body>
+</html>

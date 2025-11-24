@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Register - Style Hub</title>
+<style>
+  body {
+    margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+     background: url('https://images.unsplash.com/photo-1595665593673-bf1ad72905c0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGNsb3RoZXMlMjBzaG9wfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500')no-repeat center center/cover;
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .form-container img{
+      width: 100px;
+      margin-bottom: 15px;
+    }
+  .form-container {
+    background:red;
+    padding:40px; border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    width:300px;
+      text-align:center;
+    }
+  h2 {
+    color:black;
+  }
+  input {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+  }
+  button {background:orange; color:black; border:none; padding:10px; border-radius:5px; width:100%; cursor:pointer;}
+  button:hover {
+    background:black;
+  }
+  a {display:block;
+   margin-top:10px;
+    color:black;
+     text-decoration:none;
+     font-size: 20px;;
+  }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <!-- 👕 Logo -->
+    <img src="shop logo.jpg" alt="Dress Shop Logo">
+
+  <h2>Create Account</h2>
+  <form onsubmit="return registerUser(event)">
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <input type="confirm password" id="confirm password" placeholder="confirm Password" required>
+    <button type="submit">Register</button>
+  </form>
+  <a href="login.html">Already have an account? Login</a>
+</div>
+
+<script>
+  function registerUser(e) {
+    e.preventDefault();
+    const user = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    };
+      localStorage.setItem('user', JSON.stringify(user));
+    alert("Registration successful! Please login.");
+    window.location.href = "login.html";
+  }
+</script>
+
+</body>
+</html>
